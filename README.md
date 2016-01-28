@@ -29,11 +29,11 @@ All populations consist of individuals that have specific life cycles from birth
 
 Here is the life cycle of *Drosophyllum*:
 
-![Drosophyllum life cycle](DrosoLife.png)
+![Drosophyllum life cycle](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/DrosoLife.png)
 
 If the tranistions associated with different stages are discrete, they can be translated into a matrix: 
 
-![Matrix](lifeCycleMat.png)
+![Matrix](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/lifeCycleMat.png)
 
 The big assumption here is that all individuals grouped within a stage behave exactly the same. If this assumption doesn't hold and individuals may be best described by continuous transitions, you can use integral projection models to link continuous vital-rate transitions to population-level metrics. 
 
@@ -421,10 +421,10 @@ set.panel()
 
 # Growth and Survival
 
-![P kernels](Pmat.png)
+![P kernels](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/Pmat.png)
 
 You can use the same code above, replace *matP* by *matF*, play around with the `conv()` function (upper limits should be > 1), and get the transitions for fecundity.
 
 # Fecundity
 
-![F kernels](Fmat.png)
+![F kernels](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/Fmat.png)
