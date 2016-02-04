@@ -5,26 +5,22 @@ This is a repository of researchers at the UCA to present their work with R code
 
 # The Biology Department
 
-- [IPMs with Maria Paniw](#IPMs-and-3D-graphs)
-- [Lasso regression with Jorge del Rosario Fernandez Santos](#Lasso-regression)
+- [IPMs and 3D graphs](#IPMs-and-3D-graphs)
+- [Lasso regression](#Lasso-regression)
 
 # IPMs and 3D graphs
 
-# Integral projection models and life-cycle transitions
+**Who made this?**
 
-The code below will show you how to create several types of functions in R and run loops. You'll also see how to construct integral projection models and plot 3D data via heat maps.
-
-**Where do I work?**
-
-PhD student at the Biology Department, attached to the project [BREATHAL](https://sites.google.com/site/ucaherrizalab/), headed by Fernando Ojeda.
-
-**What do I do?**
+I am Maria Paniw, a PhD student at the Biology Department, attached to the project [BREATHAL](https://sites.google.com/site/ucaherrizalab/), headed by Fernando Ojeda.
 
 In a nutshell, I have focused my research on stochastic population dynamics of disturbance-adapted plant species. In concrete, I work on the population dynamics of *Drosophyllum lusitanicum*, a fire-adapted carnivorous plant species.
 
 ![Drosophyllum](http://www.carnivorousplants.org/howto/GrowingGuides/Images/Drosophyllum.jpg)
 
 
+**What does this code do?**
+The code below will show you how to create several types of functions in R and run loops. You'll also see how to construct integral projection models to describe population dynamics and plot 3D data via heat maps.
 
 **What exactly do I mean by 'population dynamics'?**
 
@@ -435,24 +431,18 @@ You can use the same code above, replace *matP* by *matF*, play around with the 
 
 # Lasso regression
 
+**Who made this?** 
+
+I am Jorge del Rosario Fernandez Santos, a postdoc at the Department of Physical Education, UCA.
+
+**What does this code do?**
 The code below will show you how to fit a linear model using the Lasso regression which is a method that accomplishes both shrinkage and variable selection. For that purpose, we are going to use the [glmnet package](http://www.jstatsoft.org/article/view/v033i01) and the Bayesian version proposed by [Lykuo & Ntzoufras (2013)](http://link.springer.com/article/10.1007%2Fs11222-012-9316-x). 
 
-
-**Where do I work?**
-
-Postdoc at the Department of Physical Education, UCA.
-
----
-title: "Variable selection methods"
-author: "Jorge del Rosario FernÃ¡ndez Santos - Department of Physical Education, UCA "
-output: html_document
----
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-In this document we are going to fit a linear model using the Lasso regression which is a method that accomplishes both shrinkage and variable selection. For that purpose, We are going to use the [glmnet package](http://www.jstatsoft.org/article/view/v033i01) and the Bayesian version proposed by [Lykuo & Ntzoufras (2013)](http://link.springer.com/article/10.1007%2Fs11222-012-9316-x). 
+**Variable selection**
 
 The first step is to produce correlated normal distributed data. We are going to use the method proposed by [Hardin et al. (2013)](http://arxiv.org/abs/1106.5834) for generating a correlation matrix and the [Cholesky descomposition](https://en.wikipedia.org/wiki/Cholesky_decomposition) to generate multivariate random correlated data.
 
