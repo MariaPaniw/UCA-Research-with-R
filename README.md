@@ -6,10 +6,13 @@ This is a repository of researchers at the UCA to present their work with R code
 # The Biology Department
 
 - [IPMs with Maria Paniw](#IPMs-and-3D-graphs)
+- [Lasso regression with Jorge del Rosario Fernandez Santos](#Lasso-regression)
 
 # IPMs and 3D graphs
 
 # Integral projection models and life-cycle transitions
+
+The code below will show you how to create several types of functions in R and run loops. You'll also see how to construct integral projection models and plot 3D data via heat maps.
 
 **Where do I work?**
 
@@ -428,3 +431,93 @@ You can use the same code above, replace *matP* by *matF*, play around with the 
 # Fecundity
 
 ![F kernels](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/Fmat.png)
+
+
+# Lasso regression
+
+The code below will show you how to fit a linear model using the Lasso regression which is a method that accomplishes both shrinkage and variable selection. For that purpose, we are going to use the [glmnet package](http://www.jstatsoft.org/article/view/v033i01) and the Bayesian version proposed by [Lykuo & Ntzoufras (2013)](http://link.springer.com/article/10.1007%2Fs11222-012-9316-x). 
+
+
+**Where do I work?**
+
+Postdoc at the Department of Physical Education, UCA.
+
+---
+title: "Variable selection methods"
+author: "Jorge del Rosario FernÃ¡ndez Santos - Department of Physical Education, UCA "
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this document we are going to fit a linear model using the Lasso regression which is a method that accomplishes both shrinkage and variable selection. For that purpose, We are going to use the [glmnet package](http://www.jstatsoft.org/article/view/v033i01) and the Bayesian version proposed by [Lykuo & Ntzoufras (2013)](http://link.springer.com/article/10.1007%2Fs11222-012-9316-x). 
+
+The first step is to produce correlated normal distributed data. We are going to use the method proposed by [Hardin et al. (2013)](http://arxiv.org/abs/1106.5834) for generating a correlation matrix and the [Cholesky descomposition](https://en.wikipedia.org/wiki/Cholesky_decomposition) to generate multivariate random correlated data.
+
+```{r eval=FALSE}
+# Generate the correlation matrix
+set.seed(7)
+noise.iden <- noisecor(diag(10), epsilon = .7, eidim=2)
+
+# Use Cholesky descomposition
+U = t(chol(noise.iden))
+numvars = dim(U)[1]
+numobs = 100
+random.normal = matrix(rnorm(numvars*numobs,0,1), nrow=numvars, ncol=numobs);
+X = U %*% random.normal
+newX = t(X)
+raw = as.data.frame(newX)
+names(raw) = c('resp', 'pred1', 'pred2', 'pred3','pred4', 'pred5', 'pred6','pred7', 'pred8', 'pred9')
+
+# Prepare the matrix Y with the response variable and the matrix X with 9 independent variables 
+X <- as.matrix(raw[,2:10])
+Y <- as.matrix(raw[,1])
+```
+
+### PACKAGE GLMNET 
+
+As state in the [glmnet vignette](http://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html), _glmnet is a package that fits a generalized linear model via penalized maximum likelihood_. To perform a Lasso regression we have to set the elastic-net penalty (Î±) = 1. The **glmnet** function is going to return different models for the researcher to choose from. 
+
+```{r eval=FALSE}
+library(glmnet)
+fit <- glmnet(X,Y)
+# And a summary of the glmnet path
+print(fit)
+# We can visualize the coefficients using the plot function
+plot(fit, label = TRUE)
+```
+![](fit.png)
+
+If we prefer that the software select one of them by cross-validation we have to use the **cv.glmnet** function. 
+```{r eval=FALSE}
+cvfit = cv.glmnet(X, Y)
+# We can plot the cross-validation curve
+plot(cvfit)
+```
+![](cvfit.png)
+```{r eval=FALSE}
+# We can get the coefficients for the model with:
+# the value of Î» that gives minimum mean cross-validated error
+cvfit$lambda.min
+# or the alue of Î» that gives the most regularized 
+# model such that error is within one standard error of the minimum
+cvfit$lambda.1se
+# To get the coefficients
+coef(cvfit, s = "lambda.min")
+```
+
+### BAYESIAN LASSO
+[Lykuo & Ntzoufras (2013)](http://link.springer.com/article/10.1007%2Fs11222-012-9316-x) proposed a Bayesian implementation of the lasso regression focusing on the appropiate specification of the shrinkage parameter Î» through Bayes factors that evaluate the inclusion of each covariate in the model. The authors create a function _blvs_ which performs a Bayesian version of the Lasso by imposing the Double-Exponential prior distribution on the linear regression coefficients. For technical details please look at the reference.
+
+```{r eval=FALSE}
+# First we have to get the benchmark correlation for a  given sample size
+# in our case n=100
+rho = bf.rho(100, 3)
+# Then the value of the shrinkage parameter
+lambda = bf.lambda(rho, 100, 1)
+# and finally the blvs function
+bLasso = blvs(X, Y, lambda=lambda, alpha2=0.0001, gamma2=10000, nburn=1000, ndraw=20000)
+```
+
