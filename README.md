@@ -8,7 +8,7 @@ This is a repository of researchers at the UCA to present their work with R code
 - [IPMs and 3D graphs](#IPMs-and-3D-graphs)
 - [Lasso regression](#Lasso-regression)
 
-# IPMs and 3D graphs
+## IPMs and 3D graphs
 
 **Who made this?**
 
@@ -429,7 +429,7 @@ You can use the same code above, replace *matP* by *matF*, play around with the 
 ![F kernels](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/Fmat.png)
 
 
-# Lasso regression
+## Lasso regression
 
 **Who made this?** 
 
