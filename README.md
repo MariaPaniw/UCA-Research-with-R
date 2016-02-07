@@ -2,8 +2,21 @@
 
 This is a repository of researchers at the UCA to present their work with R code. 
 
-- [IPMs and 3D graphs](#PMs-and-3D-graphs)
+- [ARIMA in fisheries](#arima-in-fisheries)
 - [Lasso regression](#lasso-regression)
+- [IPMs and 3D graphs](#PMs-and-3D-graphs)
+
+## ARIMA in Fisheries
+
+**Who made this?**
+
+I am Remedios Cabrera Castro, a faculty member of the Biology Department. Our research group specializes in population dynamics of fish stocks. Currently, we are working with fisheries data on the Pacific ![halibut](https://en.wikipedia.org/wiki/Pacific_halibut) (*Hippoglossus stenolepis*, Schmidt, 1904). Specifically, we are working with ![Autoregressive integrated moving average (ARIMA) models](http://people.duke.edu/~rnau/411arim.htm).
+
+
+**What does this code do?**
+The code below demonstrates the use of ARIMA models for fisheries using a "catch per unit effort" (CPUE) time series. This code, along with much more information on its implementation (in Spanish) is available at: [http://rodin.uca.es/xmlui/handle/10498/17877](http://rodin.uca.es/xmlui/handle/10498/17877) 
+
+*Code is being updated!!*
 
 ## IPMs and 3D graphs
 
