@@ -10,7 +10,7 @@ This is a repository of researchers at the UCA to present their work with R code
 
 **Who made this?**
 
-I am Remedios Cabrera Castro, a faculty member of the Biology Department. Our research group specializes in population dynamics of fish stocks. Currently, we are working with fisheries data on the Pacific ![halibut](https://en.wikipedia.org/wiki/Pacific_halibut) (*Hippoglossus stenolepis*, Schmidt, 1904). Specifically, we are working with ![Autoregressive integrated moving average (ARIMA) models](http://people.duke.edu/~rnau/411arim.htm).
+I am Remedios Cabrera Castro, a faculty member of the Biology Department. Our research group specializes in population dynamics of fish stocks. Currently, we are working with fisheries data on the Pacific [halibut](https://en.wikipedia.org/wiki/Pacific_halibut) (*Hippoglossus stenolepis*, Schmidt, 1904). Specifically, we are working with [Autoregressive integrated moving average (ARIMA) models](http://people.duke.edu/~rnau/411arim.htm).
 
 
 **What does this code do?**
