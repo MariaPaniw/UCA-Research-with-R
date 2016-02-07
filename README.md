@@ -488,7 +488,7 @@ print(fit)
 # We can visualize the coefficients using the plot function
 plot(fit, label = TRUE)
 ```
-![](fit.png)
+![fit](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/fit.png)
 
 If we prefer that the software select one of them by cross-validation we have to use the **cv.glmnet** function. 
 ```{r eval=FALSE}
@@ -496,7 +496,7 @@ cvfit = cv.glmnet(X, Y)
 # We can plot the cross-validation curve
 plot(cvfit)
 ```
-![](cvfit.png)
+![cvfit](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/cvfit.png)
 ```{r eval=FALSE}
 # We can get the coefficients for the model with:
 # the value of Î» that gives minimum mean cross-validated error
