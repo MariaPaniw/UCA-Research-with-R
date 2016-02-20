@@ -16,7 +16,220 @@ I am Remedios Cabrera Castro, a faculty member of the Biology Department. Our re
 **What does this code do?**
 The code below demonstrates the use of ARIMA models for fisheries using a "catch per unit effort" (CPUE) time series. This code, along with much more information on its implementation (in Spanish) is available at: [http://rodin.uca.es/xmlui/handle/10498/17877](http://rodin.uca.es/xmlui/handle/10498/17877) 
 
-*Code is being updated!!*
+Modelos ARIMA, series temporales 
+========================================================
+
+
+Example
+========================================================
+
+
+```r
+#Carga de librería. 
+library(tseries) # install package if necessary 
+
+setwd("G:/Teaching/IntroR/")
+
+#Load data (average CPUE)
+
+X = read.csv("MM31998-2010.csv") # you can find it in the figures folder
+```
+
+
+```r
+#Representación gráfica. 
+
+#Definición de la serie temporal con datos propios. 
+
+X<-ts(X,start=1998,frequency=13) 
+plot(X, type="o",col ="red") 
+```
+
+![ARIMA1](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA1.png)
+
+```r
+#Gráficos de correlación. 
+acf(X,lag.max=42) 
+```
+
+![ARIMA2](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA2.png)
+
+```r
+pacf(X,lag.max=42) 
+```
+
+![ARIMA3](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA3.png)
+
+```r
+Box.test(X, lag = 6, type = c("Box-Pierce", "Ljung-Box")) 
+```
+
+```
+
+	Box-Pierce test
+
+data:  X
+X-squared = 419.5567, df = 6, p-value < 2.2e-16
+```
+
+
+```r
+library(lmtest) 
+n<-length(X)  
+ti<-1:n  
+dwtest(X~ti) 
+```
+
+```
+
+	Durbin-Watson test
+
+data:  X ~ ti
+DW = 0.6392, p-value < 2.2e-16
+alternative hypothesis: true autocorrelation is greater than 0
+```
+
+```r
+#Elección del modelo, aditivo o multiplicativo. 
+dif<-diff(X) 
+sd(dif)/abs(mean(dif)) 
+```
+
+```
+[1] 48.44421
+```
+
+```r
+inc<-X[-1]/X[-length(X)] 
+sd(inc)/abs(mean(inc)) 
+```
+
+```
+[1] 0.03341487
+```
+
+
+```r
+#Descomposición de la serie por componentes. 
+plot(decompose(X,type="multiplicative")) 
+```
+
+![ARIMA4](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA4.png)
+
+```r
+adf.test(X) 
+```
+
+```
+
+	Augmented Dickey-Fuller Test
+
+data:  X
+Dickey-Fuller = -5.3119, Lag order = 5, p-value = 0.01
+alternative hypothesis: stationary
+```
+
+```r
+kpss.test(X,null=c("Trend")) 
+```
+
+```
+
+	KPSS Test for Trend Stationarity
+
+data:  X
+KPSS Trend = 0.0479, Truncation lag parameter = 3, p-value = 0.1
+```
+
+```r
+X_te<-diff(X, lag=1) 
+```
+
+
+```r
+#No ciclo estacional. 
+X_te_es<-diff(X_te, lag=13) 
+plot(decompose(X_te_es,type="multiplicative")) 
+```
+
+![ARIMA5](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA5.png)
+
+```r
+plot(X_te_es) 
+```
+
+![ARIMA6](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA6.png)
+
+```r
+#Correlaciones de la serie estacionaria. 
+layout(matrix(c(1,2),1,2)) 
+acf(X_te_es,lag.max=42) 
+pacf(X_te_es,lag.max=42) 
+```
+
+![ARIMA7](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA7.png)
+
+```r
+#Realización del modelo. 
+fit_1<-arima(X, order =c(0,0,1), seasonal=list(order=c(0,0,1), period=13)) 
+X.pred<-predict(fit_1,n.ahead=65) 
+
+#Comprobación de residuos. 
+str(fit_1) 
+```
+
+```
+List of 13
+ $ coef     : Named num [1:3] 1 0.303 471.509
+  ..- attr(*, "names")= chr [1:3] "ma1" "sma1" "intercept"
+ $ sigma2   : num 271
+ $ var.coef : num [1:3, 1:3] 6.07e-04 -1.75e-08 7.56e-08 -1.75e-08 4.48e-03 ...
+  ..- attr(*, "dimnames")=List of 2
+  .. ..$ : chr [1:3] "ma1" "sma1" "intercept"
+  .. ..$ : chr [1:3] "ma1" "sma1" "intercept"
+ $ mask     : logi [1:3] TRUE TRUE TRUE
+ $ loglik   : num -717
+ $ aic      : num 1442
+ $ arma     : int [1:7] 0 1 0 1 13 0 0
+ $ residuals: Time-Series [1:169] from 1998 to 2011: -0.876 15.458 2.027 22.758 28.34 ...
+ $ call     : language arima(x = X, order = c(0, 0, 1), seasonal = list(order = c(0, 0, 1),      period = 13))
+ $ series   : chr "X"
+ $ code     : int 0
+ $ n.cond   : int 0
+ $ model    :List of 10
+  ..$ phi  : num(0) 
+  ..$ theta: num [1:14] 1 0 0 0 0 ...
+  ..$ Delta: num(0) 
+  ..$ Z    : num [1:15] 1 0 0 0 0 0 0 0 0 0 ...
+  ..$ a    : num [1:15] -55.94 -31.05 -5.45 -6.54 -6.46 ...
+  ..$ P    : num [1:15, 1:15] 0.00 1.11e-16 0.00 0.00 0.00 ...
+  ..$ T    : num [1:15, 1:15] 0 0 0 0 0 0 0 0 0 0 ...
+  ..$ V    : num [1:15, 1:15] 1 1 0 0 0 ...
+  ..$ h    : num 0
+  ..$ Pn   : num [1:15, 1:15] 1.01 1.00 -5.20e-17 -5.23e-17 5.27e-17 ...
+ - attr(*, "class")= chr "Arima"
+```
+
+```r
+layout(matrix(c(1,2),1,2)) 
+acf(fit_1$residuals) 
+pacf(fit_1$residuals) 
+```
+
+![ARIMA8](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA8.png)
+
+```r
+Box.test(fit_1$residuals, lag=7) 
+```
+
+```
+
+	Box-Pierce test
+
+data:  fit_1$residuals
+X-squared = 184.0872, df = 7, p-value < 2.2e-16
+```
+
 
 ## IPMs and 3D graphs
 
