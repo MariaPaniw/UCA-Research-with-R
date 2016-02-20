@@ -45,7 +45,7 @@ X<-ts(X,start=1998,frequency=13)
 plot(X, type="o",col ="red") 
 ```
 
-![ARIMA1](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA1.png)
+![ARIMA1](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA_1.png)
 
 ```r
 #Gráficos de correlación. 
