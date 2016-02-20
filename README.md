@@ -16,9 +16,6 @@ I am Remedios Cabrera Castro, a faculty member of the Biology Department. Our re
 **What does this code do?**
 The code below demonstrates the use of ARIMA models for fisheries using a "catch per unit effort" (CPUE) time series. This code, along with much more information on its implementation (in Spanish) is available at: [http://rodin.uca.es/xmlui/handle/10498/17877](http://rodin.uca.es/xmlui/handle/10498/17877) 
 
-Modelos ARIMA, series temporales 
-========================================================
-
 
 Example
 ========================================================
