@@ -52,13 +52,13 @@ plot(X, type="o",col ="red")
 acf(X,lag.max=42) 
 ```
 
-![ARIMA2](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA2.png)
+![ARIMA2](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA_2.png)
 
 ```r
 pacf(X,lag.max=42) 
 ```
 
-![ARIMA3](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA3.png)
+![ARIMA3](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA_3.png)
 
 ```r
 Box.test(X, lag = 6, type = c("Box-Pierce", "Ljung-Box")) 
@@ -114,7 +114,7 @@ sd(inc)/abs(mean(inc))
 plot(decompose(X,type="multiplicative")) 
 ```
 
-![ARIMA4](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA4.png)
+![ARIMA4](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA_4.png)
 
 ```r
 adf.test(X) 
@@ -152,13 +152,13 @@ X_te_es<-diff(X_te, lag=13)
 plot(decompose(X_te_es,type="multiplicative")) 
 ```
 
-![ARIMA5](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA5.png)
+![ARIMA5](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA_5.png)
 
 ```r
 plot(X_te_es) 
 ```
 
-![ARIMA6](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA6.png)
+![ARIMA6](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA_6.png)
 
 ```r
 #Correlaciones de la serie estacionaria. 
@@ -167,7 +167,7 @@ acf(X_te_es,lag.max=42)
 pacf(X_te_es,lag.max=42) 
 ```
 
-![ARIMA7](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA7.png)
+![ARIMA7](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA_7.png)
 
 ```r
 #Realización del modelo. 
@@ -216,7 +216,7 @@ acf(fit_1$residuals)
 pacf(fit_1$residuals) 
 ```
 
-![ARIMA8](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA8.png)
+![ARIMA8](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/ARIMA_8.png)
 
 ```r
 Box.test(fit_1$residuals, lag=7) 
