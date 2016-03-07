@@ -4,7 +4,7 @@ This is a repository of researchers at the UCA to present their work with R code
 
 - [ARIMA in fisheries](#arima-in-fisheries)
 - [Lasso regression](#lasso-regression)
-- [IPMs and 3D graphs](#iPMs-and-3D-graphs)
+- [IPMs and 3D graphs](#ipms-and-3D-graphs)
 
 ## ARIMA in Fisheries
 
