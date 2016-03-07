@@ -4,7 +4,7 @@ This is a repository of researchers at the UCA to present their work with R code
 
 - [ARIMA in fisheries](#arima-in-fisheries)
 - [Lasso regression](#lasso-regression)
-- [IPMs and 3D graphs](#PMs-and-3D-graphs)
+- [IPMs and 3D graphs](#iPMs-and-3D-graphs)
 
 ## ARIMA in Fisheries
 
@@ -647,6 +647,131 @@ You can use the same code above, replace *matP* by *matF*, play around with the 
 # Fecundity
 
 ![F kernels](https://raw.githubusercontent.com/MariaPaniw/UCA-Research-with-R/master/Figures/Fmat.png)
+
+
+# Stochastic simulations of population growth
+
+You can use the matPF array, which holds IPMs for each time-since-fire (TSF) state, to simulate stochastic population dynamics where the stochastic part comes from fires, i.e., a Markov chain environment in which the states are TSF and transitions are based on probability of fire! 
+
+
+```r
+### Add simulations 
+
+# Simulation function (just one of many possibilities)
+# This function takes a environmental transition matrix (trans) and the number of simulation (N years)
+# and returns a character vector of the sequence of environments in N years 
+
+simula <- function(trans,N) {
+  # This function tells you sample the rownames (i.e., environment at t+1), each having a probability = column name that you got at previous iteration(environment at t) 
+  state.at.N <- function(char,trans) {
+    sample(rownames(trans),1,prob=trans[,char])
+  }
+  
+  sim <- character(N)
+  sim[1] <- "1" # start with 0 matrix and populate 1st character with "1"
+  
+  # Populate characters 2-N with the row names samples obtained from (state.at.N)
+  for (b in 2:N) {
+    sim[b] <- state.at.N(sim[b-1],trans)
+  }
+  
+  sim
+}
+### Prepare parameters
+
+
+num.of.sim = 10 # number of simulations to run (here few to speed process up);
+# Define frequency of fire (= 1/fire return interval) 
+
+freqarray=c(1/10,1/30,1/50,1/100) # in the ms, we used 16 different frequencies 
+
+# Define simulation time
+tr=500 #the discard time
+ts=2000 
+
+# run each simulation for ts+tr years  
+trun=ts+tr
+
+# The different fire environments 
+env=c("zero","one","two","three",">three")
+env.n=length(env)
+
+
+lambda.s=array(0,c(length(freqarray),num.of.sim)) # save final stochstic lambda
+
+# Set some values needed to for further calculations 
+    
+    n2=(dim(matPF)[1])^2
+    n=dim(matPF)[1]
+    
+     for(si in 1:num.of.sim){ # loop over simulations
+      
+      for (f in 1:length(freqarray)) {
+        #create environmental transition matrices
+        
+        fire=freqarray[f]; 
+        
+        P=matrix(c(fire,1-fire,rep(0,3),
+                   fire,0,1-fire,rep(0,2),
+                   fire,0,0,1-fire,0,
+                   fire,0,0,0,1-fire,
+                   fire,0,0,0,1-fire),nrow=5,ncol=5,byrow=F)
+        colnames(P) <- c("1","2","3", "4","5")
+        row.names(P) <- c("1","2","3", "4","5")
+        
+        
+        ## Simulations of TSF states
+        simulate=as.numeric(simula(P,trun+1))
+
+        # Calculate stochastic lambda
+        ########################################################
+        
+        states <- simulate
+        growth <- array(0,ts)   
+        
+        # Initialize population vectors (n0)
+        vec1=c(1000,rep(1,n-1)) # start with 1000 seeds 
+        vec1 <- vec1/sum(vec1)
+        vec1 <- t(vec1) 
+        
+        # ITERATION TO CALCULATE LAMBDA FOR EACH TIME STEP
+        for (i  in 1:trun){
+          i2 <- states[i]
+          mat1 <-  matPF[,,i2]
+          vec1 <- mat1%*%as.numeric(vec1)
+          growth1 <- sum(vec1) # population growth at one time step 
+          vec1 <- vec1/growth1
+          if( i > tr){ # after the burn-in, save the growth rate for each time step      
+            i1 <- i - tr
+            growth[i1] <- growth1
+          }
+          
+        }
+        
+        a1=sum(log(growth[1:ts]))
+        
+        lambda.s[f,si]= a1  
+        
+      }
+      
+      
+    }
+    
+lambda.s/ts # stochastic growth rate decreases with increasing fire return
+```
+
+```
+            [,1]         [,2]         [,3]         [,4]         [,5]
+[1,]  0.19403244  0.194449845  0.184284959  0.175270054  0.166475084
+[2,]  0.03281634  0.041596917  0.069778985  0.046907929  0.092693754
+[3,]  0.01897316  0.002842226  0.004510146  0.003573959 -0.002749331
+[4,] -0.01381451 -0.032761771 -0.001564432 -0.017575502 -0.032322083
+            [,6]        [,7]         [,8]         [,9]       [,10]
+[1,]  0.14945419  0.17299825  0.153782749  0.139537006  0.15444790
+[2,]  0.06209270  0.05104792  0.035423477  0.030231530  0.07482913
+[3,]  0.01533621  0.02664775  0.012921860  0.009208009  0.03176619
+[4,] -0.04393360 -0.02290194 -0.006742557 -0.023728928 -0.03458702
+```
 
 
 ## Lasso regression
